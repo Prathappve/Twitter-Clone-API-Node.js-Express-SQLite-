@@ -1,534 +1,124 @@
-# Twitter
+# Twitter Clone - Backend API (Node.js + SQLite)
 
-Given an `app.js` file and a database file `twitterClone.db` consisting of five tables `user`, `follower`, `tweet`, `reply`, and `like`.
+A fully functional backend API for a simplified Twitter-like social media platform built with **Node.js**, **Express**, and **SQLite**. This API allows users to securely register, login, tweet, like, reply, and view feeds — all while enforcing access controls and following best practices in RESTful API development.
 
-Write APIs to perform operations on the tables `user`, `follower`, `tweet`, `reply`, and `like` containing the following columns,
+## 🚀 Features
 
-**User Table**
+✅ User Registration & Authentication (JWT-based)  
+✅ Post, Delete, and View Tweets  
+✅ Like and Reply Functionality  
+✅ View Feed of Followed Users  
+✅ Secure Access Control for Data Privacy  
+✅ Follows RESTful principles with clear route structure  
+✅ SQLite3 database integration using `sqlite` & `sqlite3`
 
-| Column   | Type    |
-| -------- | ------- |
-| user_id  | INTEGER |
-| name     | TEXT    |
-| username | TEXT    |
-| password | TEXT    |
-| gender   | TEXT    |
+---
 
-**Follower Table**
+## 📁 Project Structure
 
-| Column              | Type    |
-| ------------------- | ------- |
-| `follower_id`       | INTEGER |
-| `follower_user_id`  | INTEGER |
-| `following_user_id` | INTEGER |
+├── app.js # Main Express server
 
-Here, if user1 follows user2 then,
+├── db.js # Database connection setup
 
-`follower_user_id` is the user ID of user1 and `following_user_id` is the user ID of user2.
+├── covid19IndiaPortal.db # SQLite database file
 
-**Tweet Table**
+├── package.json # NPM configuration
 
-| Column    | Type     |
-| --------- | -------- |
-| tweet_id  | INTEGER  |
-| tweet     | TEXT     |
-| user_id   | INTEGER  |
-| date_time | DATETIME |
+├── routes/ # API route handlers
 
-**Reply Table**
+├── middleware/ # JWT authentication logic
 
-| Column    | Type     |
-| --------- | -------- |
-| reply_id  | INTEGER  |
-| tweet_id  | INTEGER  |
-| reply     | TEXT     |
-| user_id   | INTEGER  |
-| date_time | DATETIME |
+└── README.md # Project documentation
 
-**Like Table**
 
-| Column    | Type     |
-| --------- | -------- |
-| like_id   | INTEGER  |
-| tweet_id  | INTEGER  |
-| user_id   | INTEGER  |
-| date_time | DATETIME |
+---
 
-#### Sample Valid User Credentials
+## 🔐 Authentication
 
-```
-{
-  "username":"JoeBiden",
-  "password":"biden@123"
-}
-```
+All protected routes use JWT tokens for authorization.  
+Include the token in the `Authorization` header as:  
+```http
+Authorization: Bearer <your_jwt_token>
 
-<Section id="section1" >
+🧪 Sample API Endpoints
 
-### API 1
+1. API-1: Register - POST /register/
 
-#### Path: `/register/`
+   Body:
 
-#### Method: `POST`
-
-**Request**
-
-```
-{
-  "username": "adam_richard",
-  "password": "richard_567",
-  "name": "Adam Richard",
-  "gender": "male"
-}
-```
-
-- **Scenario 1**
-
-  - **Description**:
-
-    If the username already exists
-
-  - **Response**
-    - **Status code**
-      ```
-      400
-      ```
-    - **Body**
-      ```
-      User already exists
-      ```
-
-- **Scenario 2**
-
-  - **Description**:
-
-    If the registrant provides a password with less than 6 characters
-
-  - **Response**
-    - **Status code**
-      ```
-      400
-      ```
-    - **Body**
-      ```
-      Password is too short
-      ```
-
-- **Scenario 3**
-
-  - **Description**:
-
-    Successful registration of the registrant
-
-  - **Response**
-
-    - **Status code**
-
-      ```
-      200
-      ```
-
-    - **Body**
-      ```
-      User created successfully
-      ```
-
-</Section>
-
-<Section id="section2">
-
-### API 2
-
-#### Path: `/login/`
-
-#### Method: `POST`
-
-**Request**
-
-```
-{
-  "username":"JoeBiden",
-  "password":"biden@123"
-}
-```
-
-- **Scenario 1**
-
-  - **Description**:
-
-    If the user doesn't have a Twitter account
-
-  - **Response**
-    - **Status code**
-      ```
-      400
-      ```
-    - **Body**
-      ```
-      Invalid user
-      ```
-
-- **Scenario 2**
-
-  - **Description**:
-
-    If the user provides an incorrect password
-
-  - **Response**
-    - **Status code**
-      ```
-      400
-      ```
-    - **Body**
-      ```
-      Invalid password
-      ```
-
-- **Scenario 3**
-
-  - **Description**:
-
-    Successful login of the user
-
-  - **Response**
-
-    Return the JWT Token
-
-    ```
-    {
-      "jwtToken": "ak2284ns8Di32......"
-    }
-    ```
-
-</Section>
-
-<Section id="authToken">
-
-### Authentication with JWT Token
-
-Write a middleware to authenticate the JWT token.
-
-- **Scenario 1**
-
-  - **Description**:
-
-    If the JWT token is not provided by the user or an invalid JWT token is provided
-
-  - **Response**
-    - **Status code**
-      ```
-      401
-      ```
-    - **Body**
-      ```
-      Invalid JWT Token
-      ```
-
-- **Scenario 2**
-  - After successful verification of JWT token, proceed to next middleware or handler
-
-</Section>
-
-<Section id="section3">
-
-### API 3
-
-#### Path: `/user/tweets/feed/`
-
-#### Method: `GET`
-
-#### Description:
-
-Returns the latest tweets of people whom the user follows. Return 4 tweets at a time
-
-#### Response
-
-```
- [
-   {
-      username: "SrBachchan",
-      tweet: "T 3859 - do something wonderful, people may imitate it ..",
-      dateTime: "2021-04-07 14:50:19"
-   },
-   ...
- ]
-```
-
-</Section>
-
-<Section id="section4">
-
-### API 4
-
-#### Path: `/user/following/`
-
-#### Method: `GET`
-
-#### Description:
-
-Returns the list of all names of people whom the user follows
-
-#### Response
-
-```
-[
-  {
-    "name": "Narendra Modi"
-  },
-  ...
-]
-```
-
-</Section>
-
-<Section id="section5">
-
-### API 5
-
-#### Path: `/user/followers/`
-
-#### Method: `GET`
-
-#### Description:
-
-Returns the list of all names of people who follows the user
-
-#### Response
-
-```
-[
-  {
-    "name": "Narendra Modi"
-  },
-  ...
-]
-```
-
-</Section>
-
-<Section id="section6">
-
-### API 6
-
-#### Path: `/tweets/:tweetId/`
-
-#### Method: `GET`
-
-- **Scenario 1**
-
-  - **Description**:
-
-    If the user requests a tweet other than the users he is following
-
-  - **Response**
-    - **Status code**
-      ```
-      401
-      ```
-    - **Body**
-      ```
-      Invalid Request
-      ```
-
-- **Scenario 2**
-
-  - **Description**:
-
-    If the user requests a tweet of the user he is following, return the tweet, likes count, replies count and date-time
-
-  - **Response**
-    ```
-    {
-       "tweet": "T 3859 - do something wonderful, people may imitate it ..",
-       "likes": 3,
-       "replies": 1,
-       "dateTime": "2021-04-07 14:50:19"
-    }
-    ```
-
-</Section>
-
-<Section id="section7">
-
-### API 7
-
-#### Path: `/tweets/:tweetId/likes/`
-
-#### Method: `GET`
-
-- **Scenario 1**
-
-  - **Description**:
-
-    If the user requests a tweet other than the users he is following
-
-  - **Response**
-    - **Status code**
-      ```
-      401
-      ```
-    - **Body**
-      ```
-      Invalid Request
-      ```
-
-- **Scenario 2**
-
-  - **Description**:
-
-    If the user requests a tweet of a user he is following, return the list of usernames who liked the tweet
-
-  - **Response**
-    ```
-    {
-       "likes": ["albert", ]
-    }
-    ```
-
-</Section>
-
-<Section id="section8">
-
-### API 8
-
-#### Path: `/tweets/:tweetId/replies/`
-
-#### Method: `GET`
-
-- **Scenario 1**
-
-  - **Description**:
-
-    If the user requests a tweet other than the users he is following
-
-  - **Response**
-    - **Status code**
-      ```
-      401
-      ```
-    - **Body**
-      ```
-      Invalid Request
-      ```
-
-- **Scenario 2**
-
-  - **Description**:
-
-    If the user requests a tweet of a user he is following, return the list of replies.
-
-  - **Response**
-
-        ```
         {
-           "replies": [
-             {
-               "name": "Narendra Modi",
-               "reply": "When you see it.."
-              },
-            ...]
+          "username": "prathap",
+          "password": "your_password",
+          "name": "Prathap V",
+          "gender": "male"
         }
-        ```
 
-    </Section>
+2. API-2: Login - POST /login/
 
-<Section id="section9">
+   Body:
 
-### API 9
+        {
+          "username": "prathap",
+          "password": "your_password"
+        }
 
-#### Path: `/user/tweets/`
+3. API-3: Tweet a Message - POST /user/tweets/
 
-#### Method: `GET`
+4. API-4: Delete Your Tweet - DELETE /tweets/:tweetId/
 
-#### Description:
+5. API-5: View Tweet Details - GET /tweets/:tweetId/
 
-Returns a list of all tweets of the user
+   Returns:
 
-#### Response
+           {
+              "tweet": "Hello World!",
+              "likes": 3,
+              "replies": 2,
+              "dateTime": "2025-07-21 10:30:00"
+            }
 
-```
-[
-  {
-    "tweet": "Ready to don the Blue and Gold",
-    "likes": 3,
-    "replies": 4,
-    "dateTime": "2021-4-3 08:32:44"
-  },
-  ...
-]
-```
+📦 Installation & Setup
 
-</Section>
+1. Clone the repo
 
-<Section id="section10">
+   git clone https://github.com/your-username/twitter-clone-backend.git
 
-### API 10
+   cd twitter-clone-backend
 
-#### Path: `/user/tweets/`
+2. Install dependencies
 
-#### Method: `POST`
+   npm install
 
-#### Description:
+3. Run the server
 
-Create a tweet in the tweet table
+   node app.js
 
-#### Request
+4. Import DB (optional)
 
-```
-{
-   "tweet": "The Mornings..."
-}
-```
+   Make sure covid19IndiaPortal.db or your SQLite file is in place.
 
-#### Response
+🛡️ Tech Stack
 
-```
-Created a Tweet
-```
+1. Node.js – JavaScript runtime
 
-</Section>
+2. Express.js – Backend framework
 
-<Section id="section11">
+3. SQLite3 – Lightweight SQL database
 
-### API 11
+4. JWT – Authentication mechanism
 
-#### Path: `/tweets/:tweetId/`
+5. bcrypt – Password hashing
 
-#### Method: `DELETE`
+6. REST API – Architecture style
 
-- **Scenario 1**
+👨‍💻 Author
 
-  - **Description**:
+Venkata Eswar Prathap Palaparthi
 
-    If the user requests to delete a tweet of other users
+Aspiring MERN Stack Developer | Passionate about building impactful products
 
-  - **Response**
-    - **Status code**
-      ```
-      401
-      ```
-    - **Body**
-      ```
-      Invalid Request
-      ```
+⭐ Contribute
 
-- **Scenario 2**
+Found a bug or want to add a feature?
 
-  - **Description**:
-
-    If the user deletes his tweet
-
-  - **Response**
-    ```
-    Tweet Removed
-    ```
-
-</Section>
-
-<br/>
-
-Use `npm install` to install the packages.
-
-**Export the express instance using the default export syntax.**
-
-**Use Common JS module syntax.**
+Pull requests and issues are welcome! Feel free to fork and improve the project.
