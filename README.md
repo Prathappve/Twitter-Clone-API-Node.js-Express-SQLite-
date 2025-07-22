@@ -40,11 +40,12 @@ Include the token in the `Authorization` header as:
 ```http
 Authorization: Bearer <your_jwt_token>
 
-🧪 Sample API Endpoints
+🧪Sample API Endpoints
 
-1. API-1: Register - POST /register/
+API-1: Register - POST /register/
 
-   Body:
+
+Body:
 
         {
           "username": "prathap",
@@ -53,22 +54,23 @@ Authorization: Bearer <your_jwt_token>
           "gender": "male"
         }
 
-2. API-2: Login - POST /login/
 
-   Body:
+API-2: Login - POST /login/
+
+Body:
 
         {
           "username": "prathap",
           "password": "your_password"
         }
 
-3. API-3: Tweet a Message - POST /user/tweets/
+API-3: Tweet a Message - POST /user/tweets/
 
-4. API-4: Delete Your Tweet - DELETE /tweets/:tweetId/
+API-4: Delete Your Tweet - DELETE /tweets/:tweetId/
 
-5. API-5: View Tweet Details - GET /tweets/:tweetId/
+API-5: View Tweet Details - GET /tweets/:tweetId/
 
-   Returns:
+Returns:
 
            {
               "tweet": "Hello World!",
@@ -77,7 +79,7 @@ Authorization: Bearer <your_jwt_token>
               "dateTime": "2025-07-21 10:30:00"
             }
 
-📦 Installation & Setup
+📦 Installation & Setup:
 
 1. Clone the repo
 
@@ -97,7 +99,7 @@ Authorization: Bearer <your_jwt_token>
 
    Make sure covid19IndiaPortal.db or your SQLite file is in place.
 
-🛡️ Tech Stack
+🛡️ Tech Stack:
 
 1. Node.js – JavaScript runtime
 
@@ -122,3 +124,4 @@ Aspiring MERN Stack Developer | Passionate about building impactful products
 Found a bug or want to add a feature?
 
 Pull requests and issues are welcome! Feel free to fork and improve the project.
+
